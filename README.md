@@ -1,53 +1,40 @@
-# ReconMaster
+# ReconMaster (Python)
 
-A comprehensive reconnaissance tool for penetration testers. Combines subdomain enumeration, port scanning, HTTP header analysis, and basic vulnerability detection in one CLI tool.
+ReconMaster is a single-command reconnaissance workflow for defensive assessments.
 
-## Features
+## What it does
 
-- Subdomain enumeration
-- Multithreaded port scanning
-- HTTP header security checks
-- Basic vulnerability detection
-- JSON output support
-- Configurable threads and timeouts
+- Resolves target IP
+- Enumerates common subdomains (domain targets)
+- Scans requested TCP ports
+- Checks web response headers for missing hardening controls
+- Produces optional JSON report output
 
-## Installation
+## Requirements
 
-Clone the repository and install dependencies:
-
-```bash
-pip install requests
-```
+- Python 3.8+
+- `requests` (from `requirements.txt`)
 
 ## Usage
 
 ```bash
-python recon_master.py <target> [options]
-```
-
-### Examples
-
-```bash
-# Basic scan
-python recon_master.py example.com
-
-# Custom port range
-python recon_master.py example.com -p 1-1000
-
-# Save results to JSON
-python recon_master.py example.com -o results.json
-
-# Increase threads
-python recon_master.py example.com -t 20
+python recon_master.py <target>
+python recon_master.py <target> -p 1-1024 -t 20 --timeout 1.5
+python recon_master.py <target> -o recon_results.json
 ```
 
 ## Options
 
-- `-p, --ports`: Port range (default: 1-1024)
-- `-t, --threads`: Number of threads (default: 10)
-- `-o, --output`: Output file (JSON)
-- `--timeout`: Socket timeout (default: 1.0)
+- `target` domain or IP
+- `-p, --ports` single port or range (default: `1-1024`)
+- `-t, --threads` worker count (default: `10`)
+- `--timeout` socket timeout in seconds (default: `1.0`)
+- `-o, --output` save results as JSON
+
+## Safety
+
+Use only with written authorization.
 
 ## License
 
-MIT
+MIT (see `LICENSE`).

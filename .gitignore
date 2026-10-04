@@ -1,2 +1,4 @@
+__pycache__/
+*.pyc
 
 recon_master_test.json

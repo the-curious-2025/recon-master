@@ -104,11 +104,33 @@ class ReconMaster:
         self.results['open_ports'] = sorted(open_ports, key=lambda item: item['port'])
         print(f"[+] Found {len(open_ports)} open ports")
 
+    def _header_candidate_urls(self):
+        """Build URLs to probe, preferring open web ports (including non-standard)."""
+        open_ports = [item['port'] for item in self.results['open_ports']]
+        candidates = []
+
+        if 443 in open_ports:
+            candidates.append(f"https://{self.target}")
+        if 80 in open_ports:
+            candidates.append(f"http://{self.target}")
+
+        for port in open_ports:
+            if port in (80, 443):
+                continue
+            candidates.append(f"https://{self.target}:{port}")
+            candidates.append(f"http://{self.target}:{port}")
+
+        # Fall back to the bare host when no ports were scanned or found open.
+        if not candidates:
+            candidates = [f"https://{self.target}", f"http://{self.target}"]
+
+        return candidates
+
     def check_headers(self):
         """Check HTTP response headers for baseline security hardening."""
         print("[+] Checking HTTP headers...")
         session = requests.Session()
-        targets = [f"https://{self.target}", f"http://{self.target}"]
+        targets = self._header_candidate_urls()
 
         for url in targets:
             try:

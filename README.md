@@ -37,11 +37,18 @@ python recon_master.py 1.1.1.1 -p 53
 - `--timeout` socket timeout in seconds (default: `1.0`)
 - `-o, --output` write JSON output file
 
+## Tests
+
+```bash
+python -m unittest -v
+```
+
 ## Common issues
 
 - **No subdomains listed**: expected for IP targets or limited DNS footprint.
 - **Very few open ports**: target may be filtered or protected.
 - **Header check fallback to HTTP**: usually means TLS trust issues in local environment.
+- **Headers on non-standard ports**: the header check follows open ports found during the scan, so a web service on a port other than 80/443 is still checked.
 
 ## Responsible use
 
